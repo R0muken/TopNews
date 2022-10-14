@@ -1,13 +1,16 @@
 # TopNews dgango project
 ## Build project
 #1
-`cd mysite` 
+`pip install -r requirements.txt`
 
 #2
-`python manage.py makemigrations`
+`cd mysite` 
 
 #3
-`python manage.py migrare`
+`python manage.py makemigrations`
+
+#4
+`python manage.py migrate`
 
 
 
