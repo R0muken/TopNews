@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block sidebar %}
+{% include 'inc/_sidebar.html '%}
+{% endblock %}
+
+
+{% block content %}
+
+{% for item in news %}
+<div class="card mb-3">
+    <div class="card-header">
+        Category: <a href="{{ item.category.get_absolute_url }}" class="list-group-item list-group-item-action">
+        {{ item.category }}</a>
+    </div>
+    <div class="card-body">
+            {% if item.photo %}
+            <img src="{{ item.photo.url }}" width="300" height=auto class="float-left mr-3" alt="">
+            {% endif %}
+
+                <h5 class="card-title">{{ item.title }}</h5>
+                <p class="card-text">{{ item.content|safe|linebreaks|truncatewords:50 }}</p>
+                <a href="{{ item.get_absolute_url }}" class="btn btn-primary">Read more...</a>
+            </div>
+
+
+    <div class="card-footer text-muted">
+        {{ item.created_at|date:"d-m-Y H:i" }}
+    </div>
+</div>
+{% empty %}
+No results. Try again.
+{% endfor%}
+
+{% endblock %}
+
+{% block pagination %}
+{% if news %}
+    <nav aria-label="...">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?{{ s }}page={{ page_obj.previous_page_number }}">Previous</a>
+                        </li>
+                    {% endif %}
+                    {% for p in page_obj.paginator.page_range %}
+
+                        {% if page_obj.number == p %}
+                        <li class="page-item active" aria-current="page"><span class="">
+                            <a class="page-link" href="?{{ s }}page={{ p }}">{{ p }}<span class="sr-only"></span></a>
+                        </span>
+                        </li>
+                        {% elif p > page_obj.number|add:-4 and p < page_obj.number|add:4 %}
+                        <li class="page-item">
+                            <a class="page-link" href="?{{ s }}page={{ p }}">{{ p }}</a>
+                        </li>
+                        {% endif %}
+                    {% endfor%}
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?{{ s }}page={{ page_obj.next_page_number }}">Next</a>
+                        </li>
+                        {% endif %}
+                </ul>
+            </nav>
+{% endif %}
+{% endblock %}
+

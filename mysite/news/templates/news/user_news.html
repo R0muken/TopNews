@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+<link href="{% static 'css/buttons.css' %}" rel="stylesheet">
+
+{% block sidebar %}
+{% load news_tags %}
+{% show_user_categories request %}
+{% endblock %}
+
+
+{% block content %}
+
+{% for item in news %}
+<div class="card mb-3">
+    <div class="card-header">
+        Category: <a href="{{ item.category.get_absolute_url }}" class="list-group-item list-group-item-action">
+        {{ item.category }}</a>
+    </div>
+    <div class="card-body">
+            {% if item.photo %}
+            <img src="{{ item.photo.url }}" width="300" height=auto class="float-left mr-3" alt="">
+            {% endif %}
+
+                <h5 class="card-title">{{ item.title }}</h5>
+                <p class="card-text">{{ item.content|safe|linebreaks|safe|truncatewords:50 }}</p>
+        <div class="buttons">
+                <div class="inner">
+                <a href="{{ item.get_absolute_url }}" class="btn btn-primary">Read more...</a>
+                </div>
+                <div class="inner">
+                <a href="{% url 'edit_news' item.slug %}" class="btn btn-primary">Edit</a>
+                </div>
+                <div class="inner">
+                <form action="{% url 'delete_news' item.slug %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary btn-block">Delete</button>
+                </form>
+                </div>
+            </div>
+            </div>
+
+
+
+    <div class="card-footer text-muted">
+        {{ item.created_at|date:"d-m-Y H:i" }}
+    </div>
+</div>
+{% endfor%}
+{% endblock %}

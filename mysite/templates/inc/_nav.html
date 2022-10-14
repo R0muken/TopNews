@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">TopNews</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">News</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'add_news' %}">Add News</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'user_news' %}">My News</a>
+                </li>
+                {% endif %}
+
+
+            </ul>
+
+            <form  action="{% url 'search' %}" method="get">
+                <div class="d-flex">
+                <input class="form-control mr-sm-2" type="search" name="s" placeholder="Search" aria-label="Search">
+
+                <button class="btn btn-outline-success my-2 my-sm-0 mg" type="submit">Search</button>
+                </div>
+            </form>
+            {% if not user.is_authenticated %}
+            <span class="navbar-text">
+                    <a href="{% url 'register' %}">Register</a> | <a href="{% url 'login' %}">Login</a>
+                </span>
+            {% else %}
+            <span class="navbar-text">
+                   {{ user.username }} | <a href="{% url 'logout' %}">Logout</a>
+                </span>
+            {% endif %}
+        </div>
+    </div>
+</nav>
