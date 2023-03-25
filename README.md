@@ -1,4 +1,4 @@
-# TopNews dgango project
+# TopNews django project
 ## Build project
 #1
 `pip install -r requirements.txt`
